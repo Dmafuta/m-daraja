@@ -1,10 +1,27 @@
+
 import requests
+from requests.auth import HTTPBasicAuth
+import base64
+import json
 import keys
 
+# get Oauth token from M-pesa [function]
+def get_mpesa_token():
+
+    consumer_key = "lyLg2cLJBFKnPSSO0Dz544GNrKGUJ8eN"
+    consumer_secret = "7AcH6LlYBAMQ5hIt"
+    api_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+
+    # make a get request using python requests liblary
+    r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
+
+    # return access_token from response
+    return r.json()['access_token']
+ 
+access_token = get_mpesa_token()
 headers = {
   'Content-Type': 'application/json',
-  'Authorization': 'Bearer WLnByHwRLgKwVLILJD0m4Bm0UQoy'
-
+  'Authorization': f"Bearer {access_token}"
 }
 
 def lipa_na_mpesa():
